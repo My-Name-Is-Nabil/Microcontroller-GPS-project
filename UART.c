@@ -11,9 +11,11 @@ void UART0_Init(void)
 	UART0_FBRD_R = 53; //fractional part = 0.8333*64 = 53
 	UART0_LCRH_R = 0x70; //8-bit data, no parity, one stop, FIFo.s enabled
 	UART0_CTL_R |= 0x01; //enable the UART
+	GPIO_PORTA_LOCK_R = 0x4C4F434B; //unlocking PORTA
+	GPIO_PORTA_CR_R |= 0xFF;
 	GPIO_PORTA_AFSEL_R |= 0x03; //enable alternate function for PA0 & PA1
 	GPIO_PORTA_DEN_R |= 0x03; //configure PA0 & PA1 as digital I/O
-	GPIO_PORTA_PCTL_R = 0x01; //configure PA0 & PA1 as Tx & Rx of UART0
+	GPIO_PORTA_PCTL_R |= 0x011; //configure PA0 & PA1 as Tx & Rx of UART0
 	GPIO_PORTA_AMSEL_R &= ~0x03; //disable analog on PA0 & PA1
 }
 
