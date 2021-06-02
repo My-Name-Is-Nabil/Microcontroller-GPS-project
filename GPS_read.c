@@ -1,7 +1,7 @@
 #include "stdint.h"
 #include "tm4c123gh6pm.h"
 void SystemInit();
-double readGPSModule(void){
+double* readGPSModule(void){
     char c0,GPSValues[100],latitudeResult[10],longitudeResult[10],parseValue[12][20],*token,tarih[9],*saat,guncelSaat[9];
     double latitude=0.0,longitude=0.0,seconds=0.0,result1=0.0,minutes=0.0,result2=0.0,resultarr[2];
     const char comma[2] = ",";
@@ -76,7 +76,7 @@ double readGPSModule(void){
                         }}}}}}}
                         return resultarr;
 }
-double toRadians(const double °ree)
+double toRadians(const double degree)
 {
     // cmath library in C++
     // defines the constant
