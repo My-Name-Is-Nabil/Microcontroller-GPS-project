@@ -22,8 +22,7 @@ void UART0_Init(void)
 uint8_t UART0_Receive(void)
 {
 	while ((UART0_FR_R & 0x10) != 0); //waiting for new input as long as FIFO is empty
-	uint8_t data = UART0_DR_R; //read the received data
-	return data; //return the received data
+	return UART0_DR_R; //read the received data
 }
 
 void UART0_Send(uint8_t data)

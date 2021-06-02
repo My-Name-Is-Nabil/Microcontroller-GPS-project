@@ -1,0 +1,11 @@
+*.o
+*.crf
+*.d
+*.lnp
+*.map
+*.uvproj
+*.htm
+*.axf
+*.dep
+*.lst
+*.s
