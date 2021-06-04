@@ -29,13 +29,13 @@ void RGBLED_Init(void) {
   GPIO_PORTF_DATA_R &= ~0x02;
 }
 
-void RGBLED_Write(unsigned char data) {
+void RGBLED_Write(uint8_t data) {
 	// Reset PF1 in the data register (Turning OFF the Red LED).
 	GPIO_PORTF_DATA_R &= ~0x02;
   GPIO_PORTF_DATA_R |= data;
 }
 
-unsigned char RGBLED_Read(void) {
+uint8_t RGBLED_Read(void) {
 	// Checking if the Red LED (PF1) is ON or OFF.
 	return GPIO_PORTF_DATA_R & 0x20;
 }
