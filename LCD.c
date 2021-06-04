@@ -112,19 +112,19 @@ void LCD_Output(uint32_t distance){
     int units = distance % 10;
 
     // Write hundreds.
-    LCD_Data((char) hundreds);
+    LCD_Data((char) (hundreds + 48));
     // Shift the cursor
     LCD_Command(0X6);
     systick_delay(1);       // Delay 40 MicroSeconds
 
     // Write tens.
-    LCD_Data((char) tens);
+    LCD_Data((char) (tens + 48));
     // Shift the cursor
     LCD_Command(0X6);
     systick_delay(1);       // Delay 40 MicroSeconds
 
     // Write units.
-    LCD_Data((char) units);
+    LCD_Data((char) (units + 48));
     // Shift the cursor
     LCD_Command(0X6);
     systick_delay(1);       // Delay 40 MicroSeconds
