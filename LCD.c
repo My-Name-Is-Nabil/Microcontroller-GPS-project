@@ -98,7 +98,9 @@ void LCD_Init(void){
 } 
 
 void LCD_Write(uint32_t distance){
-	// Clear screen
+	  int units, tens, hundreds;
+    
+    // Clear screen
     LCD_Command(0X01);
     systick_delay(2);       //Delay 1.64 MelliSeconds
 
@@ -107,9 +109,9 @@ void LCD_Write(uint32_t distance){
     systick_delay(1);       // Delay 40 MicroSeconds
 
     // Calculate hundreds, tens, units.
-    int hundreds = distance / 100;
-    int tens = (distance / 10) % 10;
-    int units = distance % 10;
+    hundreds = distance / 100;
+    tens = (distance / 10) % 10;
+    units = distance % 10;
 
     // Write hundreds.
     LCD_Data((char) (hundreds + 48));
