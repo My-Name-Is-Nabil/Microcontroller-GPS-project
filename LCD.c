@@ -15,7 +15,7 @@
 
 void LCD_Command(unsigned char command){
     // set RS and RW to 0
-    GPIO_PORTE_DATA_R &= 0x3C;          // 111100
+    GPIO_PORTE_DATA_R = 0x00;          // 000000
 
     // Write command to LCD D0 -> D7
 	GPIO_PORTB_DATA_R = command;
@@ -28,7 +28,7 @@ void LCD_Command(unsigned char command){
 
 void LCD_Data(unsigned char data){
 	// set RS  = 1, and RW = 0
-    GPIO_PORTE_DATA_R &= 0x3D;          // 111101
+    GPIO_PORTE_DATA_R &= 0x01;          // 000001
 
     // Write data to LCD D0 -> D7
 	GPIO_PORTB_DATA_R = data;
@@ -97,7 +97,7 @@ void LCD_Init(void){
     systick_delay(1);       // Delay 40 MicroSeconds
 } 
 
-void LCD_Output(uint32_t distance){
+void LCD_Write(uint32_t distance){
 	// Clear screen
     LCD_Command(0X01);
     systick_delay(2);       //Delay 1.64 MelliSeconds
