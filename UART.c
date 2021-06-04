@@ -7,9 +7,9 @@ void UART0_Init(void)
 	SYSCTL_RCGCGPIO_R |= 0x01; //activate PORTA
 	while ((SYSCTL_PRGPIO_R & 0x01) == 0);
 	UART0_CTL_R &= ~0x301; //disable the UART
-	//BaudRate = 9600 --> 80MHZ /(16*9600) = 520.8333
-	UART0_IBRD_R = 520; //integer part = 520
-	UART0_FBRD_R = 53; //fractional part = 0.8333*64 = 53
+	//BaudRate = 9600 --> 16MHZ /(16*9600) = 104.1667
+	UART2_IBRD_R = 104; //integer part = 104
+	UART2_FBRD_R = 11; //fractional part = 0.1667*64 + 0.5 = 11
 	UART0_LCRH_R = 0x70; //8-bit data, no parity, one stop, FIFo.s enabled
 	UART0_CTL_R |= 0x301; //enable the UART, send, and recieve
 	//unlocking PORTA
@@ -47,9 +47,9 @@ void UART2_Init(void)
 	SYSCTL_RCGCGPIO_R |= 0x08; //activate PORTD
 	while ((SYSCTL_PRGPIO_R & 0x08) == 0);
 	UART2_CTL_R &= ~0x301; //disable the UART
-	//BaudRate = 9600 --> 80MHZ /(16*9600) = 520.8333
-	UART2_IBRD_R = 520; //integer part = 520
-	UART2_FBRD_R = 53; //fractional part = 0.8333*64 = 53
+	//BaudRate = 9600 --> 16MHZ /(16*9600) = 104.1667
+	UART2_IBRD_R = 104; //integer part = 104
+	UART2_FBRD_R = 11; //fractional part = 0.1667*64 + 0.5 = 11
 	UART2_LCRH_R = 0x70; //8-bit data, no parity, one stop, FIFo.s enabled
 	UART2_CTL_R |= 0x301; //enable the UART, send, and recieve
 	//unlocking PORTD
