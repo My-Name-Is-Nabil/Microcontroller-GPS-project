@@ -3,14 +3,15 @@
 #include "tm4c123gh6pm.h"
 void SystemInit();
 void SEVENSEGMENT_Init(void) {
-	volatile unsigned long delay;
+	//volatile unsigned long delay;
 	// enable PORTB, PORTA clock.
 	// PORTB -> writing the digit on one of the 7-segments.
 	// PORTA -> select one of the 7-segments, (PA4: to enable unit digit, PA5: to enable tenth digit, PA6: to enable hundredth digit).
-  SYSCTL_RCGCGPIO_R |= 0x03;
+  SYSCTL_RCGCGPIO_R |= 0x00000003;
 	
-  delay = SYSCTL_RCGCGPIO_R; // Delay.
-	
+  //delay = SYSCTL_RCGCGPIO_R; // Delay.
+	while ((SYSCTL_PRGPIO_R & 0x0000003) == 0){} // DElay
+		
 	// PORTB Initialization.
 	// Unlock PORTB commit Register.
   GPIO_PORTB_LOCK_R = 0x4C4F434B;

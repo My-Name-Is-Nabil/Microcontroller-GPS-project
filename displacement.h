@@ -1,0 +1,1 @@
+void sevensegment(int distance);
