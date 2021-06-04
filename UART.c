@@ -6,18 +6,18 @@ void UART0_Init(void)
 	SYSCTL_RCGCUART_R |= 0x01; //activate UART0
 	SYSCTL_RCGCGPIO_R |= 0x01; //activate PORTA
 	while ((SYSCTL_PRGPIO_R & 0x01) == 0);
-	UART0_CTL_R &= ~0x01; //disable the UART
-	//PC BaudRate = 115200 --> 80MHZ /(16*115200) = 43.402
-	UART0_IBRD_R = 43; //integer part = 43
-	UART0_FBRD_R = 26; //fractional part = 0.402*64 = 26
+	UART0_CTL_R &= ~0x301; //disable the UART
+	//BaudRate = 9600 --> 80MHZ /(16*9600) = 520.8333
+	UART0_IBRD_R = 520; //integer part = 520
+	UART0_FBRD_R = 53; //fractional part = 0.8333*64 = 53
 	UART0_LCRH_R = 0x70; //8-bit data, no parity, one stop, FIFo.s enabled
-	UART0_CTL_R |= 0x01; //enable the UART
+	UART0_CTL_R |= 0x301; //enable the UART, send, and recieve
 	//unlocking PORTA
 	GPIO_PORTA_LOCK_R = 0x4C4F434B;
 	GPIO_PORTA_CR_R |= 0xFF;
 	GPIO_PORTA_AFSEL_R |= 0x03; //enable alternate function for PA0 & PA1
 	GPIO_PORTA_DEN_R |= 0x03; //configure PA0 & PA1 as digital I/O
-	GPIO_PORTA_PCTL_R |= 0x011; //configure PA0 & PA1 as Tx & Rx of UART0
+	GPIO_PORTA_PCTL_R |= 0x011; //configure PA0 & PA1 as Rx & Tx of UART0
 	GPIO_PORTA_AMSEL_R &= ~0x03; //disable analog on PA0 & PA1
 }
 
@@ -46,18 +46,18 @@ void UART2_Init(void)
 	SYSCTL_RCGCUART_R |= 0x04; //activate UART2
 	SYSCTL_RCGCGPIO_R |= 0x08; //activate PORTD
 	while ((SYSCTL_PRGPIO_R & 0x08) == 0);
-	UART2_CTL_R &= ~0x01; //disable the UART
-	//GPS BaudRate = 9600 --> 80MHZ /(16*9600) = 520.8333
+	UART2_CTL_R &= ~0x301; //disable the UART
+	//BaudRate = 9600 --> 80MHZ /(16*9600) = 520.8333
 	UART2_IBRD_R = 520; //integer part = 520
 	UART2_FBRD_R = 53; //fractional part = 0.8333*64 = 53
 	UART2_LCRH_R = 0x70; //8-bit data, no parity, one stop, FIFo.s enabled
-	UART2_CTL_R |= 0x01; //enable the UART
+	UART2_CTL_R |= 0x301; //enable the UART, send, and recieve
 	//unlocking PORTD
 	GPIO_PORTD_LOCK_R = 0x4C4F434B;
 	GPIO_PORTD_CR_R |= 0xFF;
 	GPIO_PORTD_AFSEL_R |= 0xC0; //enable alternate function for PD6 & PD7
 	GPIO_PORTD_DEN_R |= 0xC0; //configure PD6 & PD7 as digital I/O
-	GPIO_PORTD_PCTL_R |= 0x22000000; //configure PD6 & PD7 as Rx & Rx of UART2
+	GPIO_PORTD_PCTL_R |= 0x22000000; //configure PD6 & PD7 as Rx & Tx of UART2
 	GPIO_PORTD_AMSEL_R &= ~0xC0; //disable analog on PD6 & PD7
 }
 
