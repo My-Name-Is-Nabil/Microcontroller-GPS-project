@@ -6,8 +6,11 @@
 #include "UART.h"
 #include "LED_Config.h"
 #include "7-Segment-LED.h"
+#define CPAC (*((volatile uint32_t *)0xE000ED88))
 
-void SystemInit(){}
+void SystemInit () {
+CPAC |= 0X00F00000;
+}
 double get_reading(double* reading1, double* reading2, int* count){
 	double current_distance = -1;	
 	if(*count == 0){
@@ -64,5 +67,5 @@ int main(){
 			//RGBLED_Write(0x08);
 		//} 
 	}
-	return 0;
+	//return 0;
 }
