@@ -44,9 +44,6 @@ bool readGPSModule(double* resultarr){
                                     c7 = wait_and_read();
                                     index++;
                                 }
-
-																//if(index!=13)
-																	//return false;
                                 index=0;
                                 token = strtok(GPSValues, comma);
                                 while( token != NULL ) {
@@ -54,27 +51,23 @@ bool readGPSModule(double* resultarr){
                                     token = strtok(NULL, comma);
                                     index++;
                                 }
-
-																if (index < 7)
-																	return false;
-																latitude=atof(parseValue[1]);
-																longitude=atof(parseValue[3]);
-	//															printf("%f", latitude);
-		//														printf("%f", longitude);
-																degrees=latitude/100;
-																minutes=latitude-(double)(degrees*100);
-																seconds=minutes/60.00;
-																result1=degrees+seconds;
-																//sprintf(latitudeResult,"%f", result);
+                                if (index < 7)
+                                    return false;
+                                latitude=atof(parseValue[1]);
+                                longitude=atof(parseValue[3]);
+                                degrees=latitude/100;
+                                minutes=latitude-(double)(degrees*100);
+                                seconds=minutes/60.00;
+                                result1=degrees+seconds;
 
 
-																degrees=longitude/100;
-																minutes=longitude-(double)(degrees*100);
-																seconds=minutes/60.00;
-																result2=degrees+seconds;
-																resultarr[0]=result1;
-																resultarr[1]=result2;
-																return true;
+                                degrees=longitude/100;
+                                minutes=longitude-(double)(degrees*100);
+                                seconds=minutes/60.00;
+                                result2=degrees+seconds;
+                                resultarr[0]=result1;
+                                resultarr[1]=result2;
+                                return true;
 
                             }
                         }
