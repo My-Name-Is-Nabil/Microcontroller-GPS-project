@@ -20,8 +20,6 @@ void UART0_Init(void)
 	GPIO_PORTA_PCTL_R |= 0x011; //configure PA0 & PA1 as Tx & Rx of UART0
 	GPIO_PORTA_AMSEL_R &= ~0x03; //disable analog on PA0 & PA1
 }
-
-	uint8_t data;
 uint8_t UART0_Receive(void)
 {
 	uint8_t data;
@@ -65,6 +63,7 @@ void UART2_Init(void)
 
 uint8_t UART2_Receive(void)
 {
+	uint8_t data;
 	while ((UART2_FR_R & 0x10) != 0); //waiting for new input as long as FIFO is empty
 	data = UART2_DR_R; //read the received data
 	return data; //return the received data
