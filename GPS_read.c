@@ -8,7 +8,7 @@
 #include "UART.h"
 #include "systick.h"
 #define M_PI 3.1415926
-void SystemInit();
+
 char wait_and_read(){
 	 uint8_t data = UART2_Receive();
 	 //systick_delay(1);

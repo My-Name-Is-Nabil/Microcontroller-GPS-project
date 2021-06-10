@@ -1,7 +1,7 @@
 #include "7-Segment-LED.h"
 #include "stdint.h"
 #include "tm4c123gh6pm.h"
-void SystemInit();
+
 void SEVENSEGMENT_Init(void) {
 	//volatile unsigned long delay;
 	// enable PORTB, PORTA clock.
