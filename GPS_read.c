@@ -3,23 +3,26 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include "tm4c123gh6pm.h"
 #include "UART.h"
+#include "systick.h"
 #define M_PI 3.1415926
 void SystemInit();
 char wait_and_read(){
-    while ((UART0_FR_R & 0x10) != 0);
-    return UART0_Receive();
+	 uint8_t data = UART2_Receive();
+	 //systick_delay(1);
+   UART0_Send(data);
+	 return data;
 }
-void readGPSModule(double* resultarr){
+bool readGPSModule(double* resultarr){
     char c0,GPSValues[100],parseValue[12][20],*token;
     double latitude=0.0,longitude=0.0,seconds=0.0,result1=0.0,minutes=0.0,result2=0.0;
     const char comma[2] = ",";
     int index=0,degrees;
 
 
-    while ((UART0_FR_R & 0x10) != 0);
-    c0=UART0_Receive();
+    c0=wait_and_read();
 
     if(c0=='$'){
         char c1 = wait_and_read();
@@ -27,11 +30,11 @@ void readGPSModule(double* resultarr){
             char c2 = wait_and_read();
             if(c2=='P'){
                 char c3 = wait_and_read();
-                if(c3=='R'){
+                if(c3=='G'){
                     char c4 = wait_and_read();
-                    if(c4=='M'){
+                    if(c4=='G'){
                         char c5 = wait_and_read();
-                        if(c5=='C'){
+                        if(c5=='A'){
                             char c6 = wait_and_read();
                             if(c6==','){
                                 char c7 = wait_and_read();
@@ -42,7 +45,8 @@ void readGPSModule(double* resultarr){
                                     index++;
                                 }
 
-
+																//if(index!=13)
+																	//return false;
                                 index=0;
                                 token = strtok(GPSValues, comma);
                                 while( token != NULL ) {
@@ -50,27 +54,28 @@ void readGPSModule(double* resultarr){
                                     token = strtok(NULL, comma);
                                     index++;
                                 }
+																
+																if (index < 7)
+																	return false;
+																latitude=atof(parseValue[1]);
+																longitude=atof(parseValue[3]);
+	//															printf("%f", latitude);
+		//														printf("%f", longitude);
+																degrees=latitude/100;
+																minutes=latitude-(double)(degrees*100);
+																seconds=minutes/60.00;
+																result1=degrees+seconds;
+																//sprintf(latitudeResult,"%f", result);
 
 
-                                if(strcmp(parseValue[1],"A")==0){
-                                    latitude=atof(parseValue[2]);
-                                    longitude=atof(parseValue[4]);
-
-
-                                    degrees=latitude/100;
-                                    minutes=latitude-(double)(degrees*100);
-                                    seconds=minutes/60.00;
-                                    result1=degrees+seconds;
-                                    //sprintf(latitudeResult,"%f", result);
-
-
-                                    degrees=longitude/100;
-                                    minutes=longitude-(double)(degrees*100);
-                                    seconds=minutes/60.00;
-                                    result2=degrees+seconds;
-                                    resultarr[0]=result1;
-                                    resultarr[1]=result2;
-                                }
+																degrees=longitude/100;
+																minutes=longitude-(double)(degrees*100);
+																seconds=minutes/60.00;
+																result2=degrees+seconds;
+																resultarr[0]=result1;
+																resultarr[1]=result2;
+																return true; 
+														
                             }   
                         }
                     }
@@ -78,10 +83,11 @@ void readGPSModule(double* resultarr){
             }
         }
     }
+		return false;
 }
 double toRadians(const double degree)
 {
-    long double one_deg = (M_PI) / 180;
+    double one_deg = (M_PI) / 180;
     return (one_deg * degree);
 }
 double distance(double lat1,double long1,double lat2,double long2)
