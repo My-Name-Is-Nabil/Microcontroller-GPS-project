@@ -9,3 +9,7 @@
 *.dep
 *.lst
 *.s
+*.bak
+*.uvopt
+*.HP
+*.iex
