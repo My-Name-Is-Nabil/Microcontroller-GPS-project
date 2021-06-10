@@ -16,7 +16,7 @@ char wait_and_read(){
 	 return data;
 }
 bool readGPSModule(double* resultarr){
-    char c0,GPSValues[100],parseValue[12][20],*token;
+    char c0,GPSValues[100],parseValue[14][20],*token;
     double latitude=0.0,longitude=0.0,seconds=0.0,result1=0.0,minutes=0.0,result2=0.0;
     const char comma[2] = ",";
     int index=0,degrees;
@@ -54,7 +54,7 @@ bool readGPSModule(double* resultarr){
                                     token = strtok(NULL, comma);
                                     index++;
                                 }
-																
+
 																if (index < 7)
 																	return false;
 																latitude=atof(parseValue[1]);
@@ -74,9 +74,9 @@ bool readGPSModule(double* resultarr){
 																result2=degrees+seconds;
 																resultarr[0]=result1;
 																resultarr[1]=result2;
-																return true; 
-														
-                            }   
+																return true;
+
+                            }
                         }
                     }
                 }
@@ -92,28 +92,17 @@ double toRadians(const double degree)
 }
 double distance(double lat1,double long1,double lat2,double long2)
 {
-    // Convert the latitudes
-    // and longitudes
-    // from degree to radians.
-		double dlong,dlat,ans,R;
+    double dlong,dlat,ans,R;
     lat1 = toRadians(lat1);
     long1 = toRadians(long1);
     lat2 = toRadians(lat2);
     long2 = toRadians(long2);
-
     dlong = long2 - long1;
     dlat = lat2 - lat1;
-
     ans = pow(sin(dlat / 2), 2) + cos(lat1) * cos(lat2) * pow(sin(dlong / 2), 2);
-
     ans = 2 * asin(sqrt(ans));
-
-    // Radius of Earth in
-    // Kilometers, R = 6371
-    // Use R = 3956 for miles
     R = 6371;
     ans = ans * R;
-
     return ans;
 }
 
