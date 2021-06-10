@@ -9,42 +9,60 @@
 
 void SystemInit(){}
 double get_reading(double* reading1, double* reading2, int* count){
-	double current_distance;	
+	double current_distance = -1;	
 	if(*count == 0){
-			readGPSModule(reading1);
-			*count++;
+			if (readGPSModule(reading1)){
+				current_distance = 0;
+				*count=*count+1;
 		}
+	}
 		else if(*count == 1){
-			readGPSModule(reading2);
-			current_distance = distance(reading1[0],reading1[1], reading2[0], reading2[1]);
-			*count++;
+			if (readGPSModule(reading2)){
+				current_distance = distance(reading1[0],reading1[1], reading2[0], reading2[1]);
+				*count=*count+1;
+			}
 		}
 		else{
+			double temp1 = reading1[0],temp2 = reading1[1];
 			reading1[0] = reading2[0];
 			reading1[1] = reading2[1]; 
-			readGPSModule(reading2);
-			current_distance = distance(reading1[0], reading1[1], reading2[0], reading2[1]);
+			if(readGPSModule(reading2))
+				current_distance = distance(reading1[0], reading1[1], reading2[0], reading2[1]);
+			else{
+				reading2[0] = reading1[0]; reading2[1] = reading1[1];
+				reading1[0] = temp1; reading1[1] = temp2;
+			}
 		}
 		return current_distance;
 }
 int main(){
-	double reading1[2], reading2[2], current_distance = 0;
+
+	
+	double distance, reading1[2], reading2[2], current_distance = 0;
 	int count = 0;
 	SEVENSEGMENT_Init();
 	SEVENSEGMENT_Write_Units(0);
 	SEVENSEGMENT_Write_Tens(0);
 	SEVENSEGMENT_Write_Hundreds(0);
-	UART2_Init();	
+	systick_Init();
+	systick_delay(1000);
+	UART2_Init();
+	UART0_Init();
 	RGBLED_Init();
 	RGBLED_Write(0x02);
 	while(1){
-		current_distance += get_reading(reading1, reading2, &count);
-		if (count != 0){
-			sevensegment((int)current_distance);
+		distance = get_reading(reading1, reading2, &count);
+		if (distance < 0){
+			continue;
 		}
-		if(current_distance >= 100){
+		current_distance += distance;
+		if (count > 1){
 			RGBLED_Write(0x04);
-		} 
+			sevensegment((uint32_t)current_distance);
+		}
+		//if(current_distance >= 100){
+			//RGBLED_Write(0x08);
+		//} 
 	}
 	return 0;
 }
