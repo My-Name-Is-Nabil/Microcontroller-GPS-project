@@ -96,6 +96,6 @@ double distance(double lat1,double long1,double lat2,double long2)
     ans = 2 * asin(sqrt(ans));
     R = 6371;
     ans = ans * R;
-    return ans;
+    return ans*100;
 }
 

@@ -58,14 +58,16 @@ int main(){
 		if (distance < 0){
 			continue;
 		}
-		current_distance += distance;
+		if (distance > 0.01)
+			current_distance += distance;
+		
 		if (count > 1){
-			RGBLED_Write(0x04);
+			//RGBLED_Write(0x04);
 			sevensegment((uint32_t)current_distance);
 		}
-		//if(current_distance >= 100){
-			//RGBLED_Write(0x08);
-		//} 
+		if(current_distance >= 100){
+			RGBLED_Write(0x04);
+		} 
 	}
 	//return 0;
 }
