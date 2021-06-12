@@ -15,7 +15,7 @@
 
 void LCD_Command(uint8_t command){
     // set RS and RW to 0
-    GPIO_PORTE_DATA_R = 0x00;          // 000000
+    GPIO_PORTE_DATA_R &= ~0x03;          // ~ 000011
 
     // Write command to LCD D0 -> D7
 	GPIO_PORTB_DATA_R = command;
@@ -23,7 +23,7 @@ void LCD_Command(uint8_t command){
     // Set the enable hiegh for 230 MicroSeconds
     GPIO_PORTE_DATA_R |= 0X04;          // 000100
 	systick_delay_micro(230);                   // Delay 230 MicroSeconds
-	GPIO_PORTE_DATA_R &= 0x3B;          // 111011
+	GPIO_PORTE_DATA_R &= ~0x04;          // 111011
 }
 
 void LCD_Data(uint8_t data){
@@ -36,7 +36,7 @@ void LCD_Data(uint8_t data){
     // Set the enable hiegh for 230 MicroSeconds
     GPIO_PORTE_DATA_R |= 0X04;          // 000100
 	systick_delay_micro(320);                   // Delay 230 MicroSeconds
-	GPIO_PORTE_DATA_R &= 0x3B;          // 111011
+	GPIO_PORTE_DATA_R &= ~0x04;          // 111011
 }
 
 void LCD_Init(void){
@@ -114,19 +114,19 @@ void LCD_Write(uint32_t distance){
     units = distance % 10;
 
     // Write hundreds.
-    LCD_Data((hundreds + 48));
+    LCD_Data((char)(hundreds + 48));
     // Shift the cursor
     LCD_Command(0X6);
     systick_delay_micro(40);       // Delay 40 MicroSeconds
 
     // Write tens.
-    LCD_Data((tens + 48));
+    LCD_Data((char)(tens + 48));
     // Shift the cursor
     LCD_Command(0X6);
     systick_delay_micro(40);       // Delay 40 MicroSeconds
 
     // Write units.
-    LCD_Data((units + 48));
+    LCD_Data((char)(units + 48));
     // Shift the cursor
     LCD_Command(0X6);
     systick_delay_micro(40);       // Delay 40 MicroSeconds
