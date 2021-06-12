@@ -13,7 +13,7 @@
 #include "LCD.h"
 #include "systick.h"
 
-void LCD_Command(unsigned char command){
+void LCD_Command(uint8_t command){
     // set RS and RW to 0
     GPIO_PORTE_DATA_R = 0x00;          // 000000
 
@@ -22,11 +22,11 @@ void LCD_Command(unsigned char command){
 	
     // Set the enable hiegh for 230 MicroSeconds
     GPIO_PORTE_DATA_R |= 0X04;          // 000100
-	systick_delay(1);                   // Delay 230 MicroSeconds
+	systick_delay_micro(230);                   // Delay 230 MicroSeconds
 	GPIO_PORTE_DATA_R &= 0x3B;          // 111011
 }
 
-void LCD_Data(unsigned char data){
+void LCD_Data(uint8_t data){
 	// set RS  = 1, and RW = 0
     GPIO_PORTE_DATA_R &= 0x01;          // 000001
 
@@ -35,7 +35,7 @@ void LCD_Data(unsigned char data){
 	
     // Set the enable hiegh for 230 MicroSeconds
     GPIO_PORTE_DATA_R |= 0X04;          // 000100
-	systick_delay(1);                   // Delay 230 MicroSeconds
+	systick_delay_micro(320);                   // Delay 230 MicroSeconds
 	GPIO_PORTE_DATA_R &= 0x3B;          // 111011
 }
 
@@ -64,49 +64,49 @@ void LCD_Init(void){
 	
     // Wakeup LCD
     LCD_Command(0X30);
-    systick_delay(1);       // Delay 40 MicroSeconds
+    systick_delay_micro(40);       // Delay 40 MicroSeconds
     
     // Use the 8-bits
     LCD_Command(0X38);
-    systick_delay(1);       // Delay 40 MicroSeconds
+    systick_delay_micro(40);       // Delay 40 MicroSeconds
     
     // Clear screen
     LCD_Command(0X01);
-    systick_delay(2);       //Delay 1.64 MelliSeconds
+    systick_delay_micro(1640);       //Delay 1.64 MelliSeconds
     
     // Display on
     LCD_Command(0X0F);
-    systick_delay(1);       // Delay 40 MicroSeconds
+    systick_delay_micro(40);       // Delay 40 MicroSeconds
 
     // Curser to the middle
     LCD_Command(0X87);
-    systick_delay(1);       // Delay 40 MicroSeconds
+    systick_delay_micro(40);       // Delay 40 MicroSeconds
 
     // Write 000.
     LCD_Data('0');
     // Shift the cursor
     LCD_Command(0X6);
-    systick_delay(1);       // Delay 40 MicroSeconds
+    systick_delay_micro(40);       // Delay 40 MicroSeconds
     LCD_Data('0');
     // Shift the cursor
     LCD_Command(0X6);
-    systick_delay(1);       // Delay 40 MicroSeconds
+    systick_delay_micro(40);       // Delay 40 MicroSeconds
     LCD_Data('0');
     // Shift the cursor
     LCD_Command(0X6);
-    systick_delay(1);       // Delay 40 MicroSeconds
+    systick_delay_micro(40);       // Delay 40 MicroSeconds
 } 
 
 void LCD_Write(uint32_t distance){
-	  int units, tens, hundreds;
+	  uint8_t units, tens, hundreds;
     
     // Clear screen
     LCD_Command(0X01);
-    systick_delay(2);       //Delay 1.64 MelliSeconds
+    systick_delay_micro(1640);       //Delay 1.64 MelliSeconds
 
     // Curser to the middle
     LCD_Command(0X87);
-    systick_delay(1);       // Delay 40 MicroSeconds
+    systick_delay_micro(40);       // Delay 40 MicroSeconds
 
     // Calculate hundreds, tens, units.
     hundreds = distance / 100;
@@ -114,20 +114,20 @@ void LCD_Write(uint32_t distance){
     units = distance % 10;
 
     // Write hundreds.
-    LCD_Data((char) (hundreds + 48));
+    LCD_Data((hundreds + 48));
     // Shift the cursor
     LCD_Command(0X6);
-    systick_delay(1);       // Delay 40 MicroSeconds
+    systick_delay_micro(40);       // Delay 40 MicroSeconds
 
     // Write tens.
-    LCD_Data((char) (tens + 48));
+    LCD_Data((tens + 48));
     // Shift the cursor
     LCD_Command(0X6);
-    systick_delay(1);       // Delay 40 MicroSeconds
+    systick_delay_micro(40);       // Delay 40 MicroSeconds
 
     // Write units.
-    LCD_Data((char) (units + 48));
+    LCD_Data((units + 48));
     // Shift the cursor
     LCD_Command(0X6);
-    systick_delay(1);       // Delay 40 MicroSeconds
+    systick_delay_micro(40);       // Delay 40 MicroSeconds
 }
