@@ -6,6 +6,8 @@
 #include "UART.h"
 #include "LED_Config.h"
 #include "7-Segment-LED.h"
+#include "LCD.h"
+
 #define CPAC (*((volatile uint32_t *)0xE000ED88))
 
 void SystemInit () {
@@ -17,20 +19,33 @@ double get_reading(double* reading1, double* reading2, int* count){
 			if (readGPSModule(reading1)){
 				current_distance = 0;
 				*count=*count+1;
+				UART0_Send(reading1[0]);
+				UART0_Send('\n');
+				UART0_Send(reading1[1]);
+				UART0_Send('/n');
 		}
 	}
 		else if(*count == 1){
 			if (readGPSModule(reading2)){
 				current_distance = distance(reading1[0],reading1[1], reading2[0], reading2[1]);
 				*count=*count+1;
+				UART0_Send(reading2[0]);
+				UART0_Send('\n');
+				UART0_Send(reading2[1]);
+				UART0_Send('/n');
 			}
 		}
 		else{
 			double temp1 = reading1[0],temp2 = reading1[1];
 			reading1[0] = reading2[0];
 			reading1[1] = reading2[1]; 
-			if(readGPSModule(reading2))
+			if(readGPSModule(reading2)){
 				current_distance = distance(reading1[0], reading1[1], reading2[0], reading2[1]);
+				UART0_Send(reading2[0]);
+				UART0_Send('\n');
+				UART0_Send(reading2[1]);
+				UART0_Send('/n');
+			}
 			else{
 				reading2[0] = reading1[0]; reading2[1] = reading1[1];
 				reading1[0] = temp1; reading1[1] = temp2;
@@ -47,10 +62,11 @@ int main(){
 	SEVENSEGMENT_Write_Units(0);
 	SEVENSEGMENT_Write_Tens(0);
 	SEVENSEGMENT_Write_Hundreds(0);
+	// LCD_init();
 	systick_Init();
-	systick_delay(1000);
-	UART2_Init();
+	systick_delay(20000);
 	UART0_Init();
+	UART2_Init();
 	RGBLED_Init();
 	RGBLED_Write(0x02);
 	while(1){
@@ -64,6 +80,7 @@ int main(){
 		if (count > 1){
 			//RGBLED_Write(0x04);
 			sevensegment((uint32_t)current_distance);
+			// LCD_Write((uint32_t)current_distance);
 		}
 		if(current_distance >= 100){
 			RGBLED_Write(0x04);

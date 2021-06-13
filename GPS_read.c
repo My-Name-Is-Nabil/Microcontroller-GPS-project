@@ -12,7 +12,7 @@
 char wait_and_read(){
 	 uint8_t data = UART2_Receive();
 	 //systick_delay(1);
-   UART0_Send(data);
+    //UART0_Send(data);
 	 return data;
 }
 bool readGPSModule(double* resultarr){
