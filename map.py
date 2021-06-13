@@ -8,7 +8,13 @@ points = []
 with open('points.txt') as f:
    for line in f:
        try:
-            points.append(double(line))
+            p = double(line)
+            degrees = p / 100
+            minutes = p - (degrees * 100)
+            seconds=minutes/60
+            r = degrees+seconds
+            points.append(r)
+
        except:
             break
 

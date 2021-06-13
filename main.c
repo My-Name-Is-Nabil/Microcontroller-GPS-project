@@ -19,20 +19,20 @@ double get_reading(double* reading1, double* reading2, int* count){
 			if (readGPSModule(reading1)){
 				current_distance = 0;
 				*count=*count+1;
-				UART0_Send(reading1[0]);
-				UART0_Send('\n');
-				UART0_Send(reading1[1]);
-				UART0_Send('/n');
+				// UART0_Send(reading1[0]);
+				// UART0_Send('\n');
+				// UART0_Send(reading1[1]);
+				// UART0_Send('/n');
 		}
 	}
 		else if(*count == 1){
 			if (readGPSModule(reading2)){
 				current_distance = distance(reading1[0],reading1[1], reading2[0], reading2[1]);
 				*count=*count+1;
-				UART0_Send(reading2[0]);
-				UART0_Send('\n');
-				UART0_Send(reading2[1]);
-				UART0_Send('/n');
+				// UART0_Send(reading2[0]);
+				// UART0_Send('\n');
+				// UART0_Send(reading2[1]);
+				// UART0_Send('/n');
 			}
 		}
 		else{
@@ -41,10 +41,10 @@ double get_reading(double* reading1, double* reading2, int* count){
 			reading1[1] = reading2[1]; 
 			if(readGPSModule(reading2)){
 				current_distance = distance(reading1[0], reading1[1], reading2[0], reading2[1]);
-				UART0_Send(reading2[0]);
-				UART0_Send('\n');
-				UART0_Send(reading2[1]);
-				UART0_Send('/n');
+				// UART0_Send(reading2[0]);
+				// UART0_Send('\n');
+				// UART0_Send(reading2[1]);
+				// UART0_Send('/n');
 			}
 			else{
 				reading2[0] = reading1[0]; reading2[1] = reading1[1];

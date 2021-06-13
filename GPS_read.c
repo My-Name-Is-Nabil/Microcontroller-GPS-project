@@ -19,7 +19,7 @@ bool readGPSModule(double* resultarr){
     char c0,GPSValues[100],parseValue[14][20],*token;
     double latitude=0.0,longitude=0.0,seconds=0.0,result1=0.0,minutes=0.0,result2=0.0;
     const char comma[2] = ",";
-    int index=0,degrees;
+    int index=0,degrees, i;
 
 
     c0=wait_and_read();
@@ -55,6 +55,22 @@ bool readGPSModule(double* resultarr){
                                     return false;
                                 latitude=atof(parseValue[1]);
                                 longitude=atof(parseValue[3]);
+                                for (i = 0; i < 20; i++){
+                                    if ((parseValue[1][i] >= '0' && parseValue[1][i] <= '9') || parseValue[1][i] == '.'){
+                                        UART0_Send(parseValue[1][i]);
+                                    } else {
+                                        break;
+                                    }
+                                }
+                                UART0_Send('\n');
+                                for (i = 0; i < 20; i++){
+                                    if ((parseValue[3][i] >= '0' && parseValue[3][i] <= '9') || parseValue[3][i] == '.'){
+                                        UART0_Send(parseValue[3][i]);
+                                    } else {
+                                        break;
+                                    }
+                                }
+                                UART0_Send('\n');
                                 degrees=latitude/100;
                                 minutes=latitude-(double)(degrees*100);
                                 seconds=minutes/60.00;
